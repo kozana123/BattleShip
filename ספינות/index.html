@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BattleShip</title>
+  <script type="module" src="./scripts/index.js"></script>
+  <link rel="stylesheet" href="./styles/index.css">
+</head>
+
+<body>
+  <section id="container">
+    <section id="form_holder">
+      <form>
+        <h2>choose your grid size</h2>
+        <div>
+          <div>
+            <input type="radio" name="size" id="10*10" value="10">
+            <label for="10*10">10*10</label>
+          </div>
+          <div>
+            <input type="radio" name="size" id="11*11" value="11">
+            <label for="11*11">11*11</label>
+          </div>
+          <div>
+            <input type="radio" name="size" id="12*12" value="12">
+            <label for="12*12">12*12</label>
+          </div>
+          <div>
+            <input type="radio" name="size" id="13*13" value="13">
+            <label for="13*13">13*13</label>
+          </div>
+          <div>
+            <input type="radio" name="size" id="14*14" value="14">
+            <label for="14*14">14*14</label>
+          </div>
+          <div>
+            <input type="radio" name="size" id="15*15" value="15">
+            <label for="15*15">15*15</label>
+          </div>
+        </div>
+        <h2>number of battleships</h2>
+        <div>
+          <div><label for="s2">battleships for size 2</label><input id="s2" type="number" value="1"></div>
+          <div><label for="s3">battleships for size 3</label><input id="s3" type="number" value="1"></div>
+          <div><label for="s4">battleships for size 4</label><input id="s4" type="number" value="1"></div>
+          <div><label for="s5">battleships for size 5</label><input id="s5" type="number" value="1"></div>
+        </div>
+        <button>START</button>
+      </form>
+    </section>
+    <section id="board_holder">
+      <section id="board"></section>
+    </section>
+    <section id="table_holder"></section>
+  </section>
+</body>
+
+</html>
