@@ -1,0 +1,38 @@
+table,
+tr,
+td,
+th {
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align: center;
+}
+
+table {
+  width: 90%;
+  margin: 0 auto;
+}
+
+#container {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  align-items: center;
+}
+
+#board td {
+  width: 10px;
+  height: 10px;
+  padding: 10px;
+  background-color: gray;
+}
+
+#board td:hover{
+  cursor: pointer;
+}
+
+#board td.sea {
+  background-color: aqua;
+}
+
+#board td.hit {
+  background-color: brown;
+}
