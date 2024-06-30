@@ -18,12 +18,12 @@ table {
   align-items: center;
 }
 
-#board td {
+/* #board td {
   width: 10px;
   height: 10px;
   padding: 10px;
   background-color: gray;
-}
+} */
 
 #board td:hover{
   cursor: pointer;

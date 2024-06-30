@@ -76,8 +76,8 @@ function printBoard() {
   for (let row = 0; row < global.board.length; row++) {
     boardHTML += '<tr>';
     for (let col = 0; col < global.board.length; col++)
-    //TODO: find the type of the ship
-      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${global.board[row][col] == 0 ? false : true}" data-value=${global.board[row][col]}></td>`;
+    //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
+      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${global.board[row][col] == 0 ? false : true}">${global.board[row][col]}</td>`;
     boardHTML += '</tr>';
   }
 
