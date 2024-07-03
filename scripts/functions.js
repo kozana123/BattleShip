@@ -85,7 +85,8 @@ function printBoard() {
 
   //הוספת אירוע לחיצה על כל תא בטבלה שנוצרה
   document.querySelectorAll('#board td').forEach((item) => { item.addEventListener('click', checkHit) });
-
+  CheckIfFreeVertical(2);
+  console.log(global.board);
 }
 
 function checkHit(event) {
@@ -95,6 +96,40 @@ function checkHit(event) {
   }
   else
     element.classList.add('sea');
+}
+
+function CheckIfFreeVertical(type){
+  let spotArr = new Array(type);
+  let amount = 0
+  let place = 0
+  let blockIsFree = true;
+  let times = 0;
+
+  for (let rounds = 0; rounds < global.size; rounds++){
+    
+    for (let x = 0; x < global.size; x++){
+      spotArr[amount] = new Array(2 * type);
+      for (let y = rounds; y < rounds + type; y++){
+        if(global.board[y][x] != 1 && global.board[y][x] != 2){
+          console.log(amount)
+          spotArr[amount][place] = y;
+          place++
+          spotArr[amount][place] = x;
+          place++
+        }
+        else{
+          blockIsFree = false
+          // spotArr[amount] = null;
+          spotArr.splice(amount,1,0);
+          amount--
+        }
+      }
+      amount++
+      place = 0
+    }
+    console.log(spotArr);
+  }
+  console.log(spotArr)
 }
 
 function addS2() {
