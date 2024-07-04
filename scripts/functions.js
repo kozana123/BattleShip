@@ -63,15 +63,15 @@ function createBoardGame() {
   global.board = board;
 
   //TODO: add battleships
-  for (let i = global.s2; i > 0; i--)
-    addS2(2);
-  for (let i = global.s3; i > 0; i--)
-    addS2(3);
-  for (let i = global.s4; i > 0; i--)
-    addS2(4);
   for (let i = global.s5; i > 0; i--)
     addS2(5);
-
+  for (let i = global.s4; i > 0; i--)
+    addS2(4);
+  for (let i = global.s3; i > 0; i--)
+    addS2(3);
+  for (let i = global.s2; i > 0; i--)
+    addS2(2);
+  
   //הדפסת הלוח על המסך
   printBoard();
 }
@@ -83,7 +83,7 @@ function printBoard() {
     boardHTML += '<tr>';
     for (let col = 0; col < global.board.length; col++)
     //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
-      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${global.board[row][col] == 0 ? false : true}">${global.board[row][col]}</td>`;
+      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${global.board[row][col] == 1 ? true : false}">${global.board[row][col]}</td>`;
     boardHTML += '</tr>';
   }
 
@@ -108,9 +108,13 @@ function checkHit(event) {
   let element = event.target; 
   if (element.dataset.is_part_of_ship == 'true') {
     element.classList.add('hit');
+    console.log(element)
   }
-  else
+  else{
     element.classList.add('sea');
+    console.log(element)
+  }
+    
 }
 
 function CheckIfFreeVertical(type){
@@ -140,14 +144,9 @@ function CheckIfFreeVertical(type){
       }
       amount++
       place = 0
-    } 
-    console.log(spotArr) 
+    }  
   }
-  console.log(spotArr)
-
   let randomSpot = Math.floor(Math.random() * (amount))
-  console.log(randomSpot);
-
   return spotArr[randomSpot];
 }
 

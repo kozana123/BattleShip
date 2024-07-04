@@ -5,5 +5,6 @@ export const global = {
   s3: 0,
   s4: 0, 
   s5: 0,
-  board: null
+  board: null,
+  ships: new Array()
 }
