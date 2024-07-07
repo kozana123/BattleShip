@@ -64,14 +64,17 @@ function createBoardGame() {
 
   //TODO: add battleships
   for (let i = global.s5; i > 0; i--)
-    addS2(5);
+    // addS2(5);
+    AddHorizontal(5)
   for (let i = global.s4; i > 0; i--)
-    addS2(4);
+    AddVertical(4);
+    // AddHorizontal(4)
   for (let i = global.s3; i > 0; i--)
-    addS2(3);
+    AddVertical(3);
+    // AddHorizontal(3)
   for (let i = global.s2; i > 0; i--)
-    addS2(2);
-  
+    // addS2(2);
+    AddHorizontal(2)
   //הדפסת הלוח על המסך
   printBoard();
 }
@@ -81,9 +84,10 @@ function printBoard() {
 
   for (let row = 0; row < global.board.length; row++) {
     boardHTML += '<tr>';
-    for (let col = 0; col < global.board.length; col++)
-    //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
+    for (let col = 0; col < global.board.length; col++){
+      //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
       boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${global.board[row][col] == 1 ? true : false}">${global.board[row][col]}</td>`;
+    }
     boardHTML += '</tr>';
   }
 
@@ -121,7 +125,6 @@ function CheckIfFreeVertical(type){
   let spotArr = new Array(type);
   let amount = 0
   let place = 0
-  let blockIsFree = true;
 
   for (let rounds = 0; rounds < global.size +(1 - type) ; rounds++){   
     for (let x = 0; x < global.size; x++){
@@ -135,8 +138,6 @@ function CheckIfFreeVertical(type){
           place++
         }
         else{
-          blockIsFree = false
-          // spotArr[amount] = null;
           spotArr.splice(amount,1,0);
           amount--
           break;
@@ -150,20 +151,48 @@ function CheckIfFreeVertical(type){
   return spotArr[randomSpot];
 }
 
-function addS2(length) {
+function CheckIfFreeHorizontal(type){
+  let spotArr = new Array(type);
+  let amount = 0
+  let place = 0
+
+  for (let rounds = 0; rounds < global.size +(1 - type) ; rounds++){   
+    for (let y = 0; y < global.size; y++){
+      spotArr[amount] = new Array(2 * type);
+      for (let x = rounds; x < rounds + type; x++){
+        if(global.board[y][x] != 1 && global.board[y][x] != 2){
+          
+          spotArr[amount][place] = y;
+          place++
+          spotArr[amount][place] = x;
+          place++
+        }
+        else{
+          spotArr.splice(amount,1,0);
+          amount--
+          break;
+        }
+      }
+      amount++
+      place = 0
+    }  
+  }
+  let randomSpot = Math.floor(Math.random() * (amount))
+  return spotArr[randomSpot];
+}
+
+
+
+function AddVertical(length) {
   let index = 0;
   let location = CheckIfFreeVertical(length);
-  
-  // let rowLocation = Math.floor(Math.random() * (global.size));
-  // let colLocation = Math.floor(Math.random() * (global.size));
 
   //TODO: check if can add s2 to row -> if true then add it. else try to col
   console.log(`got place:${location}`)
   for(let i = 0; i < length; i++){
     if(i == 0){
       if(location[index] > 0){
-        global.board[location[index] - 1][location[index+1]] = 2;
-        
+        global.board[location[index] - 1][location[index+1]] = 2;       
       }
       if(location[index+1] > 0){
         global.board[location[index]][location[index+1] - 1] = 2;
@@ -183,7 +212,6 @@ function addS2(length) {
       }
       global.board[location[index++]][location[index++]] = 1;
     }
-
     if(i == length - 1){
       if(location[index] < global.size -1){
         global.board[location[index] + 1][location[index+1]] = 2;
@@ -199,3 +227,45 @@ function addS2(length) {
   }
 }
 
+function AddHorizontal(length){
+  let index = 0;
+  let location = CheckIfFreeHorizontal(length)
+
+  console.log(`got place:${location}`)
+  for(let i = 0; i < length; i++){
+    if(i == 0){
+      if(location[index + 1] > 0){
+        global.board[location[index]][location[index+1] -1] = 2; 
+      }
+      if(location[index] > 0){
+        global.board[location[index] -1][location[index+1]] = 2;
+      }
+      if(location[index] < global.size-1){
+        global.board[location[index] + 1][location[index+1]] = 2;
+      }
+      global.board[location[index++]][location[index++]] = 1; 
+    }
+    else if (i < length - 1){
+
+      if(location[index] > 0){
+      global.board[location[index] - 1][location[index + 1]] = 2;
+      }
+      if(location[index] < global.size-1){
+      global.board[location[index] + 1][location[index + 1]] = 2;
+      }
+      global.board[location[index++]][location[index++]] = 1;
+    }
+    if(i == length - 1){
+      if(location[index + 1] < global.size -1){
+        global.board[location[index]][location[index+1] + 1] = 2;
+      }
+      if(location[index] > 0){
+      global.board[location[index] - 1][location[index+1] ] = 2;
+      }
+      if(location[index] < global.size-1){
+      global.board[location[index] + 1][location[index+1]] = 2;
+      }
+      global.board[location[index++]][location[index++]] = 1; 
+    } 
+  }         
+}
