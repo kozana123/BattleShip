@@ -6,5 +6,9 @@ export const global = {
   s4: 0, 
   s5: 0,
   board: null,
-  ships: new Array()
+  ships: new Array(),
+  shipCounter: 0,
+  isVertical: true
+
+  
 }

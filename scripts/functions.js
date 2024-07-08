@@ -64,17 +64,14 @@ function createBoardGame() {
 
   //TODO: add battleships
   for (let i = global.s5; i > 0; i--)
-    // addS2(5);
-    AddHorizontal(5)
+    Add(5)
   for (let i = global.s4; i > 0; i--)
-    AddVertical(4);
-    // AddHorizontal(4)
+    Add(4)
   for (let i = global.s3; i > 0; i--)
-    AddVertical(3);
-    // AddHorizontal(3)
+    Add(3)
   for (let i = global.s2; i > 0; i--)
-    // addS2(2);
-    AddHorizontal(2)
+    Add(2)
+
   //הדפסת הלוח על המסך
   printBoard();
 }
@@ -85,8 +82,9 @@ function printBoard() {
   for (let row = 0; row < global.board.length; row++) {
     boardHTML += '<tr>';
     for (let col = 0; col < global.board.length; col++){
+      
       //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
-      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${global.board[row][col] == 1 ? true : false}">${global.board[row][col]}</td>`;
+      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${Number(global.board[row][col][0]) == 1  ? true : false}" id = ${String(global.board[row][col]).substring(2)}>${global.board[row][col]}</td>`;
     }
     boardHTML += '</tr>';
   }
@@ -103,7 +101,7 @@ function CreateColor(){
     if (item.innerHTML == 0){
       item.classList.add('sea');
     }
-    else if (item.innerHTML == 1){
+    else if (item.innerHTML[0] == 1){
       item.classList.add('hit');
     }
   });
@@ -130,7 +128,7 @@ function CheckIfFreeVertical(type){
     for (let x = 0; x < global.size; x++){
       spotArr[amount] = new Array(2 * type);
       for (let y = rounds; y < rounds + type; y++){
-        if(global.board[y][x] != 1 && global.board[y][x] != 2){
+        if(global.board[y][x][0] != 1 && global.board[y][x] != 2){
           
           spotArr[amount][place] = y;
           place++
@@ -148,6 +146,7 @@ function CheckIfFreeVertical(type){
     }  
   }
   let randomSpot = Math.floor(Math.random() * (amount))
+  console.log(spotArr)
   return spotArr[randomSpot];
 }
 
@@ -160,7 +159,7 @@ function CheckIfFreeHorizontal(type){
     for (let y = 0; y < global.size; y++){
       spotArr[amount] = new Array(2 * type);
       for (let x = rounds; x < rounds + type; x++){
-        if(global.board[y][x] != 1 && global.board[y][x] != 2){
+        if(global.board[y][x][0] != 1 && global.board[y][x] != 2){
           
           spotArr[amount][place] = y;
           place++
@@ -178,7 +177,9 @@ function CheckIfFreeHorizontal(type){
     }  
   }
   let randomSpot = Math.floor(Math.random() * (amount))
+  console.log(spotArr)
   return spotArr[randomSpot];
+  
 }
 
 
@@ -200,7 +201,13 @@ function AddVertical(length) {
       if(location[index + 1] < global.size-1){
         global.board[location[index]][location[index+1] + 1] = 2;
       }
-      global.board[location[index++]][location[index++]] = 1; 
+      if(location[index] > 0 && location[index+1] > 0){
+        global.board[location[index] - 1][location[index+1 ]- 1] = 2;
+      }
+      if(location[index] > 0 && location[index+1] < global.size-1){
+        global.board[location[index] - 1][location[index+1] + 1] = 2;
+      }
+      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
     }
     else if (i < length - 1){
 
@@ -210,7 +217,7 @@ function AddVertical(length) {
       if(location[index + 1] < global.size-1){
       global.board[location[index]][location[index + 1] + 1] = 2;
       }
-      global.board[location[index++]][location[index++]] = 1;
+      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;
     }
     if(i == length - 1){
       if(location[index] < global.size -1){
@@ -222,9 +229,17 @@ function AddVertical(length) {
       if(location[index + 1] < global.size-1){
       global.board[location[index]][location[index+1] + 1] = 2;
       }
-      global.board[location[index++]][location[index++]] = 1; 
+      if(location[index] < global.size -1 && location[index+1] > 0){
+        global.board[location[index] + 1][location[index+1] - 1] = 2;
+      }
+      if(location[index] < global.size -1 && location[index + 1] < global.size-1){
+        global.board[location[index] + 1][location[index+1] + 1] = 2;
+      }
+      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
     }          
   }
+  global.shipCounter++;
+  
 }
 
 function AddHorizontal(length){
@@ -243,7 +258,13 @@ function AddHorizontal(length){
       if(location[index] < global.size-1){
         global.board[location[index] + 1][location[index+1]] = 2;
       }
-      global.board[location[index++]][location[index++]] = 1; 
+      if(location[index + 1] > 0 && location[index] > 0){
+        global.board[location[index] - 1][location[index+1] -1] = 2;
+      }
+      if(location[index + 1] > 0 && location[index] < global.size-1){
+        global.board[location[index] + 1][location[index+1] -1] = 2;
+      }
+      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;  
     }
     else if (i < length - 1){
 
@@ -253,7 +274,7 @@ function AddHorizontal(length){
       if(location[index] < global.size-1){
       global.board[location[index] + 1][location[index + 1]] = 2;
       }
-      global.board[location[index++]][location[index++]] = 1;
+      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
     }
     if(i == length - 1){
       if(location[index + 1] < global.size -1){
@@ -265,7 +286,29 @@ function AddHorizontal(length){
       if(location[index] < global.size-1){
       global.board[location[index] + 1][location[index+1]] = 2;
       }
-      global.board[location[index++]][location[index++]] = 1; 
+      if(location[index + 1] < global.size -1 && location[index] > 0){
+        global.board[location[index] - 1][location[index+1] + 1] = 2;
+      }
+      if(location[index + 1] < global.size -1 && location[index] < global.size-1){
+        global.board[location[index] + 1][location[index+1] + 1] = 2;
+      }
+      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;  
     } 
-  }         
+  }
+  global.shipCounter++;         
+}
+
+function Add(length){
+  switch(global.isVertical){
+    case(true):
+    AddVertical(length)
+    global.isVertical = false
+    break;
+
+    case(false):
+    AddHorizontal(length)
+    global.isVertical = true;
+    break;
+  }
+  
 }
