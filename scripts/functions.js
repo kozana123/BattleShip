@@ -30,19 +30,19 @@ function createAmountTable() {
       </tr>
       <tr>
         <td>Type 2</td>
-        <td>${global.s2}</td>
+        <td id="ship2">${global.s2}</td>
       </tr>
       <tr>
         <td>Type 3</td>
-        <td>${global.s3}</td>
+        <td id="ship3">${global.s3}</td>
       </tr>
       <tr>
         <td>Type 4</td>
-        <td>${global.s4}</td>
+        <td id="ship4">${global.s4}</td>
       </tr>
       <tr>
         <td>Type 5</td>
-        <td>${global.s5}</td>
+        <td id="ship5">${global.s5}</td>
       </tr>
     </table>
   `;
@@ -84,7 +84,8 @@ function printBoard() {
     for (let col = 0; col < global.board.length; col++){
       
       //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
-      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${Number(global.board[row][col][0]) == 1  ? true : false}" id = ${String(global.board[row][col]).substring(2)}>${global.board[row][col]}</td>`;
+      boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${Number(global.board[row][col][0]) == 1  ? true : false}"
+      data-id = ${String(global.board[row][col]).substring(2)} data-clicked ="${false}">${global.board[row][col]}</td>`;
     }
     boardHTML += '</tr>';
   }
@@ -102,21 +103,34 @@ function CreateColor(){
       item.classList.add('sea');
     }
     else if (item.innerHTML[0] == 1){
-      item.classList.add('hit');
+      // item.classList.add('hit');
     }
   });
 }
 function checkHit(event) {
   let element = event.target; 
-  if (element.dataset.is_part_of_ship == 'true') {
+  if (element.dataset.is_part_of_ship == 'true' && element.dataset.clicked == 'false') {
+    global.shipsHealth[element.dataset.id]--
+    CheckDestroy(element.dataset.id, event.target)
     element.classList.add('hit');
     console.log(element)
+    element.dataset.clicked = 'true';
   }
   else{
     element.classList.add('sea');
     console.log(element)
   }
     
+}
+
+function CheckDestroy(type, event){
+  
+  if(global.shipsHealth[type] == 0){
+    console.log(global.ships[type])
+    document.querySelector(`#table_holder #ship${global.ships[type]}`).innerHTML--
+    document.querySelectorAll(`td[data-id="${type}"]`).forEach((item) => {item.classList.add('destroy')})
+  }
+ 
 }
 
 function CheckIfFreeVertical(type){
@@ -146,7 +160,6 @@ function CheckIfFreeVertical(type){
     }  
   }
   let randomSpot = Math.floor(Math.random() * (amount))
-  console.log(spotArr)
   return spotArr[randomSpot];
 }
 
@@ -177,7 +190,6 @@ function CheckIfFreeHorizontal(type){
     }  
   }
   let randomSpot = Math.floor(Math.random() * (amount))
-  console.log(spotArr)
   return spotArr[randomSpot];
   
 }
@@ -310,5 +322,8 @@ function Add(length){
     global.isVertical = true;
     break;
   }
+  global.ships.push(length)
+  global.shipsHealth.push(length)
+  console.log(global.ships)
   
 }

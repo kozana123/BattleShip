@@ -7,6 +7,7 @@ export const global = {
   s5: 0,
   board: null,
   ships: new Array(),
+  shipsHealth: new Array(),
   shipCounter: 0,
   isVertical: true
 
