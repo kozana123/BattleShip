@@ -10,13 +10,16 @@ body{
 }
 
 #form_holder{
-  color: rgb(255, 251, 0);
+  color: rgb(200, 198, 34);
   text-align: center;
-  border: 4px solid rgb(43, 43, 43);
-  border-radius: 15px;
+  border: 10x solid rgb(43, 43, 43);
+  border-radius: 10px;
   background-image: url(./images/BackGround2.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  font-family:	Copperplate;
+  font-weight: 900;
+
 
 }
 
@@ -27,6 +30,7 @@ body{
 #board_holder table{
   background-color: white;
   border: 2px solid rgb(0, 0, 0);
+  font-family: "Secular One", sans-serif;
 }
 
 #table_holder table{
@@ -34,9 +38,9 @@ body{
   border: 3px solid rgb(43, 43, 43);
   background-image: url(./images/BackGround.jpg);
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
+  font-weight: 900;
 
+}
 
 table,
 tr,
@@ -61,8 +65,8 @@ table {
 
 #board td {
   padding: 10px;
-  background-color: rgb(90, 90, 90);
-    /* background-image: url(./images/BackGround.jpg);
+  /* background-color: rgb(90, 90, 90);
+    background-image: url(./images/BackGround.jpg);
     background-repeat: no-repeat;
     background-size: 100% 100%; */
 }
@@ -81,4 +85,71 @@ table {
 }
 #board td.destroy {
   background-color: rgb(255, 0, 0);
+}
+
+.button {
+  all: unset;
+  display:flex;
+  margin: 100px;
+  align-items: center;
+  position: relative;
+  padding: 0em 3.3em;
+  border: rgb(8, 9, 6) solid 0.15em;
+  border-radius: 0.25em;
+  color: rgb(250, 221, 30);
+  font-size: 1.5em;
+  font-weight: 900;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border 300ms, color 300ms;
+  user-select: none;
+
+ 
+}
+
+.button p {
+  z-index: 1;
+}
+
+.button:hover {
+  color: #212121;
+}
+
+.button:active {
+  border-color: rgb(143, 136, 73);
+}
+
+.button::after, .button::before {
+  content: "";
+  position: absolute;
+  width: 10em;
+  aspect-ratio: 1;
+  background: rgb(241, 241, 26);
+  opacity: 50%;
+  border-radius: 50%;
+  transition: transform 500ms, background 300ms;
+
+}
+
+.button::before {
+  left: 0;
+  transform: translateX(-8em);
+}
+
+.button::after {
+  right: 0;
+  transform: translateX(8em);
+}
+
+.button:hover:before {
+  transform: translateX(-1em);
+}
+
+.button:hover:after {
+  transform: translateX(1em);
+}
+
+.button:active:before,
+.button:active:after {
+  background: rgb(235, 188, 17);
 }
