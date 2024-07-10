@@ -23,7 +23,7 @@ export function start(event) {
 
 function createAmountTable() {
   let tableHTML = `
-    <table>
+    <table id="amountTable">
       <tr>
         <th>Type</th>
         <th>Amount</th>
