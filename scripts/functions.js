@@ -95,6 +95,8 @@ function printBoard() {
   //הוספת אירוע לחיצה על כל תא בטבלה שנוצרה
   document.querySelectorAll('#board td').forEach((item) => { item.addEventListener('click', checkHit) });
   CreateColor();
+  if(global.couldntFindAPlace == true)
+    alert(`${global.notEnoughtSpaceMsg}`);
 }
 
 function CreateColor(){
@@ -116,7 +118,7 @@ function checkHit(event) {
     console.log(element)
     element.dataset.clicked = 'true';
   }
-  else{
+  else if(element.dataset.is_part_of_ship != 'true'){
     element.classList.add('sea');
     console.log(element)
   }
@@ -126,7 +128,6 @@ function checkHit(event) {
 function CheckDestroy(type, event){
   
   if(global.shipsHealth[type] == 0){
-    console.log(global.ships[type])
     document.querySelector(`#table_holder #ship${global.ships[type]}`).innerHTML--
     document.querySelectorAll(`td[data-id="${type}"]`).forEach((item) => {item.classList.add('destroy')})
   }
@@ -189,9 +190,9 @@ function CheckIfFreeHorizontal(type){
       place = 0
     }  
   }
-  let randomSpot = Math.floor(Math.random() * (amount))
-  return spotArr[randomSpot];
   
+    let randomSpot = Math.floor(Math.random() * (amount))
+    return spotArr[randomSpot]; 
 }
 
 
@@ -199,115 +200,129 @@ function CheckIfFreeHorizontal(type){
 function AddVertical(length) {
   let index = 0;
   let location = CheckIfFreeVertical(length);
-
-  //TODO: check if can add s2 to row -> if true then add it. else try to col
-  console.log(`got place:${location}`)
-  for(let i = 0; i < length; i++){
-    if(i == 0){
-      if(location[index] > 0){
-        global.board[location[index] - 1][location[index+1]] = 2;       
-      }
-      if(location[index+1] > 0){
-        global.board[location[index]][location[index+1] - 1] = 2;
-      }
-      if(location[index + 1] < global.size-1){
-        global.board[location[index]][location[index+1] + 1] = 2;
-      }
-      if(location[index] > 0 && location[index+1] > 0){
-        global.board[location[index] - 1][location[index+1 ]- 1] = 2;
-      }
-      if(location[index] > 0 && location[index+1] < global.size-1){
-        global.board[location[index] - 1][location[index+1] + 1] = 2;
-      }
-      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
-    }
-    else if (i < length - 1){
-
-      if(location[index+1] > 0){
-      global.board[location[index]][location[index + 1] - 1] = 2;
-      }
-      if(location[index + 1] < global.size-1){
-      global.board[location[index]][location[index + 1] + 1] = 2;
-      }
-      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;
-    }
-    if(i == length - 1){
-      if(location[index] < global.size -1){
-        global.board[location[index] + 1][location[index+1]] = 2;
-      }
-      if(location[index+1] > 0){
-      global.board[location[index]][location[index+1] - 1] = 2;
-      }
-      if(location[index + 1] < global.size-1){
-      global.board[location[index]][location[index+1] + 1] = 2;
-      }
-      if(location[index] < global.size -1 && location[index+1] > 0){
-        global.board[location[index] + 1][location[index+1] - 1] = 2;
-      }
-      if(location[index] < global.size -1 && location[index + 1] < global.size-1){
-        global.board[location[index] + 1][location[index+1] + 1] = 2;
-      }
-      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
-    }          
+  console.log(location)
+  if(location == undefined && global.cantVertical == false){
+    global.cantVertical = true;
+    AddHorizontal(length);
   }
-  global.shipCounter++;
-  
+  else if(location == undefined && global.cantVertical == true){
+    CantPutShips(length);
+  }
+  else{
+  //TODO: check if can add s2 to row -> if true then add it. else try to col
+    for(let i = 0; i < length; i++){
+      if(i == 0){
+        if(location[index] > 0){
+          global.board[location[index] - 1][location[index+1]] = 2;       
+        }
+        if(location[index+1] > 0){
+          global.board[location[index]][location[index+1] - 1] = 2;
+        }
+        if(location[index + 1] < global.size-1){
+          global.board[location[index]][location[index+1] + 1] = 2;
+        }
+        if(location[index] > 0 && location[index+1] > 0){
+          global.board[location[index] - 1][location[index+1 ]- 1] = 2;
+        }
+        if(location[index] > 0 && location[index+1] < global.size-1){
+          global.board[location[index] - 1][location[index+1] + 1] = 2;
+        }
+        global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
+      }
+      else if (i < length - 1){
+
+        if(location[index+1] > 0){
+        global.board[location[index]][location[index + 1] - 1] = 2;
+        }
+        if(location[index + 1] < global.size-1){
+        global.board[location[index]][location[index + 1] + 1] = 2;
+        }
+        global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;
+      }
+      if(i == length - 1){
+        if(location[index] < global.size -1){
+          global.board[location[index] + 1][location[index+1]] = 2;
+        }
+        if(location[index+1] > 0){
+        global.board[location[index]][location[index+1] - 1] = 2;
+        }
+        if(location[index + 1] < global.size-1){
+        global.board[location[index]][location[index+1] + 1] = 2;
+        }
+        if(location[index] < global.size -1 && location[index+1] > 0){
+          global.board[location[index] + 1][location[index+1] - 1] = 2;
+        }
+        if(location[index] < global.size -1 && location[index + 1] < global.size-1){
+          global.board[location[index] + 1][location[index+1] + 1] = 2;
+        }
+        global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
+      }          
+    }
+    global.shipCounter++;
+  }  
 }
 
 function AddHorizontal(length){
   let index = 0;
   let location = CheckIfFreeHorizontal(length)
-
-  console.log(`got place:${location}`)
-  for(let i = 0; i < length; i++){
-    if(i == 0){
-      if(location[index + 1] > 0){
-        global.board[location[index]][location[index+1] -1] = 2; 
-      }
-      if(location[index] > 0){
-        global.board[location[index] -1][location[index+1]] = 2;
-      }
-      if(location[index] < global.size-1){
-        global.board[location[index] + 1][location[index+1]] = 2;
-      }
-      if(location[index + 1] > 0 && location[index] > 0){
-        global.board[location[index] - 1][location[index+1] -1] = 2;
-      }
-      if(location[index + 1] > 0 && location[index] < global.size-1){
-        global.board[location[index] + 1][location[index+1] -1] = 2;
-      }
-      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;  
-    }
-    else if (i < length - 1){
-
-      if(location[index] > 0){
-      global.board[location[index] - 1][location[index + 1]] = 2;
-      }
-      if(location[index] < global.size-1){
-      global.board[location[index] + 1][location[index + 1]] = 2;
-      }
-      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
-    }
-    if(i == length - 1){
-      if(location[index + 1] < global.size -1){
-        global.board[location[index]][location[index+1] + 1] = 2;
-      }
-      if(location[index] > 0){
-      global.board[location[index] - 1][location[index+1] ] = 2;
-      }
-      if(location[index] < global.size-1){
-      global.board[location[index] + 1][location[index+1]] = 2;
-      }
-      if(location[index + 1] < global.size -1 && location[index] > 0){
-        global.board[location[index] - 1][location[index+1] + 1] = 2;
-      }
-      if(location[index + 1] < global.size -1 && location[index] < global.size-1){
-        global.board[location[index] + 1][location[index+1] + 1] = 2;
-      }
-      global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;  
-    } 
+  if(location == undefined && global.cantHorizontal == false){
+    global.cantHorizontal = true;
+    AddVertical(length);
   }
-  global.shipCounter++;         
+  else if(location == undefined && global.cantHorizontal == true){
+    CantPutShips(length);
+  }
+  else{
+    for(let i = 0; i < length; i++){
+      if(i == 0){
+        if(location[index + 1] > 0){
+          global.board[location[index]][location[index+1] -1] = 2; 
+        }
+        if(location[index] > 0){
+          global.board[location[index] -1][location[index+1]] = 2;
+        }
+        if(location[index] < global.size-1){
+          global.board[location[index] + 1][location[index+1]] = 2;
+        }
+        if(location[index + 1] > 0 && location[index] > 0){
+          global.board[location[index] - 1][location[index+1] -1] = 2;
+        }
+        if(location[index + 1] > 0 && location[index] < global.size-1){
+          global.board[location[index] + 1][location[index+1] -1] = 2;
+        }
+        global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;  
+      }
+      else if (i < length - 1){
+
+        if(location[index] > 0){
+        global.board[location[index] - 1][location[index + 1]] = 2;
+        }
+        if(location[index] < global.size-1){
+        global.board[location[index] + 1][location[index + 1]] = 2;
+        }
+        global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`; 
+      }
+      if(i == length - 1){
+        if(location[index + 1] < global.size -1){
+          global.board[location[index]][location[index+1] + 1] = 2;
+        }
+        if(location[index] > 0){
+        global.board[location[index] - 1][location[index+1] ] = 2;
+        }
+        if(location[index] < global.size-1){
+        global.board[location[index] + 1][location[index+1]] = 2;
+        }
+        if(location[index + 1] < global.size -1 && location[index] > 0){
+          global.board[location[index] - 1][location[index+1] + 1] = 2;
+        }
+        if(location[index + 1] < global.size -1 && location[index] < global.size-1){
+          global.board[location[index] + 1][location[index+1] + 1] = 2;
+        }
+        global.board[location[index++]][location[index++]] = `1-${global.shipCounter}`;  
+      } 
+    }
+    global.shipCounter++; 
+  }        
 }
 
 function Add(length){
@@ -324,6 +339,34 @@ function Add(length){
   }
   global.ships.push(length)
   global.shipsHealth.push(length)
-  console.log(global.ships)
   
+}
+
+function CantPutShips(length){
+  let decreaseAmountOfShips = 0;
+  global.couldntFindAPlace = true;
+  global.ships.forEach(element => {
+    if(element == length)
+      console
+      decreaseAmountOfShips++   
+  });
+  // console.log(decreaseAmountOfShips)
+  switch(length){
+    case(2):
+    global.s2 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 2`;
+    break;
+    case(3):
+    global.s3 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 3`;
+    break;
+    case(4):
+    global.s4 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 4`;
+    break;
+    case(5):
+    global.s5 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 5`;
+    break;
+  }
 }
