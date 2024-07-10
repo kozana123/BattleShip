@@ -15,9 +15,10 @@ export function start(event) {
   global.s3 = Number(document.querySelector('#s3').value);
   global.s4 = Number(document.querySelector('#s4').value);
   global.s5 = Number(document.querySelector('#s5').value);
-
-  createAmountTable();
   createBoardGame();
+  createAmountTable();
+ 
+
 
 }
 
@@ -63,13 +64,13 @@ function createBoardGame() {
   global.board = board;
 
   //TODO: add battleships
-  for (let i = global.s5; i > 0; i--)
+  for (let i = 0; i < global.s5; i++)
     Add(5)
-  for (let i = global.s4; i > 0; i--)
+  for (let i = 0; i < global.s4; i++)
     Add(4)
-  for (let i = global.s3; i > 0; i--)
+  for (let i = 0; i < global.s3; i++)
     Add(3)
-  for (let i = global.s2; i > 0; i--)
+  for (let i = 0; i < global.s2; i++)
     Add(2)
 
   //הדפסת הלוח על המסך
@@ -200,14 +201,14 @@ function CheckIfFreeHorizontal(type){
 function AddVertical(length) {
   let index = 0;
   let location = CheckIfFreeVertical(length);
-  console.log(location)
-  if(location == undefined && global.cantVertical == false){
+  console.log(`Vertical ${global.cantVertical} ,location ${location}`)
+  if(location == 0 && global.cantVertical == false){
     global.cantVertical = true;
-    AddHorizontal(length);
+    Add(length);
   }
-  else if(location == undefined && global.cantVertical == true){
-    CantPutShips(length);
-  }
+  // else if(location == 0 && global.cantVertical == true && global.cantHorizontal == true){
+  //   CantPutShips(length);
+  // }
   else{
   //TODO: check if can add s2 to row -> if true then add it. else try to col
     for(let i = 0; i < length; i++){
@@ -259,19 +260,22 @@ function AddVertical(length) {
       }          
     }
     global.shipCounter++;
+    global.ships.push(length)
+    global.shipsHealth.push(length)
   }  
 }
 
 function AddHorizontal(length){
   let index = 0;
   let location = CheckIfFreeHorizontal(length)
-  if(location == undefined && global.cantHorizontal == false){
+  console.log(`Horizontal ${global.cantHorizontal}, location ${location}`)
+  if(location == 0 && global.cantHorizontal == false){
     global.cantHorizontal = true;
-    AddVertical(length);
+    Add(length);
   }
-  else if(location == undefined && global.cantHorizontal == true){
-    CantPutShips(length);
-  }
+  // else if(location == 0 && global.cantHorizontal == true && global.cantVertical == true){
+  //   CantPutShips(length);
+  // }
   else{
     for(let i = 0; i < length; i++){
       if(i == 0){
@@ -322,51 +326,61 @@ function AddHorizontal(length){
       } 
     }
     global.shipCounter++; 
+    global.ships.push(length)
+    global.shipsHealth.push(length)
   }        
 }
 
 function Add(length){
-  switch(global.isVertical){
-    case(true):
+  if (global.isVertical == true && global.cantVertical == false){
     AddVertical(length)
+    if(global.cantHorizontal != true){
     global.isVertical = false
-    break;
-
-    case(false):
-    AddHorizontal(length)
-    global.isVertical = true;
-    break;
+    }
   }
-  global.ships.push(length)
-  global.shipsHealth.push(length)
-  
+  else if (global.isVertical == false && global.cantHorizontal == false){
+    AddHorizontal(length)
+    if(global.cantVertical != true){
+      global.isVertical = true
+    }      
+  }
+  else{
+    CantPutShips(length);
+  }
 }
 
 function CantPutShips(length){
-  let decreaseAmountOfShips = 0;
+  let howMuchShipsCreated = 0;
+  let decreaseAmountOfShips
   global.couldntFindAPlace = true;
   global.ships.forEach(element => {
     if(element == length)
-      console
-      decreaseAmountOfShips++   
+      howMuchShipsCreated++   
   });
+  console.log(length)
   // console.log(decreaseAmountOfShips)
   switch(length){
     case(2):
-    global.s2 -= decreaseAmountOfShips;
-    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 2`;
+    decreaseAmountOfShips = global.s2 - howMuchShipsCreated;
+    global.s2 -= decreaseAmountOfShips
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 2, `;
     break;
     case(3):
+    decreaseAmountOfShips = global.s3 - howMuchShipsCreated;
     global.s3 -= decreaseAmountOfShips;
-    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 3`;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 3, `;
     break;
     case(4):
+    decreaseAmountOfShips = global.s4 - howMuchShipsCreated;
     global.s4 -= decreaseAmountOfShips;
-    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 4`;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 4, `;
     break;
     case(5):
+    decreaseAmountOfShips = global.s5 - howMuchShipsCreated;
     global.s5 -= decreaseAmountOfShips;
-    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 5`;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 5, `;
     break;
   }
+  global.cantHorizontal = false;
+  global.cantVertical = false;
 }
