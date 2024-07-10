@@ -38,6 +38,7 @@ body{
   border: 3px solid rgb(43, 43, 43);
   background-image: url(./images/BackGround.jpg);
   background-repeat: no-repeat;
+  background-size: 100% 100%;
   font-weight: 900;
 
 }
@@ -76,15 +77,21 @@ table {
 }
 
 #board td.sea {
-  background-color: aqua;
+  /* background-color: aqua; */
+  background-image: url(./images/Wave3.gif);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   
 }
 
 #board td.hit {
-  background-color: brown;
+  background-color: orange;
 }
 #board td.destroy {
-  background-color: rgb(255, 0, 0);
+  /* background-color: rgb(255, 0, 0); */
+  background: linear-gradient(#ff2b0f, #ffdf11, #ff7715, #ff2b0f);
+  background-size: 300% 400%;
+  animation: Animation 1s ease-in infinite;
 }
 
 .button {
@@ -152,4 +159,10 @@ table {
 .button:active:before,
 .button:active:after {
   background: rgb(235, 188, 17);
+}
+
+@keyframes Animation { 
+  0%{background-position:100% 10%}
+  50%{background-position:100% -5%}
+  100%{background-position:100% 10%}
 }
