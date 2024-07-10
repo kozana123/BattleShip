@@ -13,6 +13,7 @@ export const global = {
 
   cantVertical: false,
   cantHorizontal: false,
-  notEnoughtSpaceMsg: ""
+  couldntFindAPlace: false,
+  notEnoughtSpaceMsg: "Couldn't find a place for: "
   
 }

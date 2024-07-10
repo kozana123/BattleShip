@@ -95,6 +95,8 @@ function printBoard() {
   //הוספת אירוע לחיצה על כל תא בטבלה שנוצרה
   document.querySelectorAll('#board td').forEach((item) => { item.addEventListener('click', checkHit) });
   CreateColor();
+  if(global.couldntFindAPlace == true)
+    alert(`${global.notEnoughtSpaceMsg}`);
 }
 
 function CreateColor(){
@@ -126,7 +128,6 @@ function checkHit(event) {
 function CheckDestroy(type, event){
   
   if(global.shipsHealth[type] == 0){
-    console.log(global.ships[type])
     document.querySelector(`#table_holder #ship${global.ships[type]}`).innerHTML--
     document.querySelectorAll(`td[data-id="${type}"]`).forEach((item) => {item.classList.add('destroy')})
   }
@@ -189,6 +190,7 @@ function CheckIfFreeHorizontal(type){
       place = 0
     }  
   }
+  
     let randomSpot = Math.floor(Math.random() * (amount))
     return spotArr[randomSpot]; 
 }
@@ -198,12 +200,12 @@ function CheckIfFreeHorizontal(type){
 function AddVertical(length) {
   let index = 0;
   let location = CheckIfFreeVertical(length);
-
-  if(location[0].length < 4 && global.cantVertical == false){
+  console.log(location)
+  if(location == undefined && global.cantVertical == false){
     global.cantVertical = true;
     AddHorizontal(length);
   }
-  else if(location[0].length < 4 && global.cantVertical == true){
+  else if(location == undefined && global.cantVertical == true){
     CantPutShips(length);
   }
   else{
@@ -263,13 +265,14 @@ function AddVertical(length) {
 function AddHorizontal(length){
   let index = 0;
   let location = CheckIfFreeHorizontal(length)
-
-  if(location[0].length < 4){
+  if(location == undefined && global.cantHorizontal == false){
     global.cantHorizontal = true;
     AddVertical(length);
   }
+  else if(location == undefined && global.cantHorizontal == true){
+    CantPutShips(length);
+  }
   else{
-    console.log(`got place:${location}`)
     for(let i = 0; i < length; i++){
       if(i == 0){
         if(location[index + 1] > 0){
@@ -336,14 +339,34 @@ function Add(length){
   }
   global.ships.push(length)
   global.shipsHealth.push(length)
-  console.log(global.ships)
   
 }
 
 function CantPutShips(length){
-  let amountOfShipsToDecrease;
+  let decreaseAmountOfShips = 0;
+  global.couldntFindAPlace = true;
+  global.ships.forEach(element => {
+    if(element == length)
+      console
+      decreaseAmountOfShips++   
+  });
+  // console.log(decreaseAmountOfShips)
   switch(length){
     case(2):
-    
+    global.s2 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 2`;
+    break;
+    case(3):
+    global.s3 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 3`;
+    break;
+    case(4):
+    global.s4 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 4`;
+    break;
+    case(5):
+    global.s5 -= decreaseAmountOfShips;
+    global.notEnoughtSpaceMsg += `${decreaseAmountOfShips} ships of 5`;
+    break;
   }
 }
