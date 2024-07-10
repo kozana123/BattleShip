@@ -9,7 +9,10 @@ export const global = {
   ships: new Array(),
   shipsHealth: new Array(),
   shipCounter: 0,
-  isVertical: true
+  isVertical: true,
 
+  cantVertical: false,
+  cantHorizontal: false,
+  notEnoughtSpaceMsg: ""
   
 }
