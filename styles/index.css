@@ -64,6 +64,9 @@ body{
   background: linear-gradient(#cee83b, #ffdf11, #ff7715, #e7e1e0);
 
 }
+#input {
+  color: #2c2626;
+}
 
 
 table,
@@ -99,6 +102,8 @@ table {
   cursor: pointer;
 }
 
+
+
 #board td.sea {
   background-color: aqua;
   background-image: url(./images/Wave3.gif);
@@ -117,6 +122,21 @@ table {
   animation: Animation 1s ease-in infinite;
 }
 
+
+
+
+#board_holder
+{
+  border: 10px solid black; 
+  padding: 4%;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: #555252;
+  
+
+}
 .button {
   all: unset;
   display:flex;
@@ -194,6 +214,9 @@ table {
 #amountTable {
   width: 10%;
   border-collapse: collapse;
+  /* border: 2px solid black;  */
+
+  
  
 }
 
