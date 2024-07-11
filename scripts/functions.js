@@ -86,7 +86,7 @@ function printBoard() {
       
       //TODO: find the type of the ship ----- data-value=${global.board[row][col]} Hidden
       boardHTML += `<td data-row="${row}" data-col="${col}" data-is_part_of_ship="${Number(global.board[row][col][0]) == 1  ? true : false}"
-      data-id = ${String(global.board[row][col]).substring(2)} data-clicked ="${false}">${global.board[row][col]}</td>`;
+      data-id = ${String(global.board[row][col]).substring(2)} data-clicked ="${false}"></td>`;
     }
     boardHTML += '</tr>';
   }
@@ -95,7 +95,7 @@ function printBoard() {
 
   //הוספת אירוע לחיצה על כל תא בטבלה שנוצרה
   document.querySelectorAll('#board td').forEach((item) => { item.addEventListener('click', checkHit) });
-  CreateColor();
+
   if(global.couldntFindAPlace == true)
     alert(`${global.notEnoughtSpaceMsg}`);
 }
