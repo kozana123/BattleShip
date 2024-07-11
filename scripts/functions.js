@@ -140,12 +140,11 @@ function CheckIfFreeVertical(type){
   let amount = 0
   let place = 0
 
-  for (let rounds = 0; rounds < global.size +(1 - type) ; rounds++){   
+  for (let rounds = 0; rounds < global.size +(1 - type); rounds++){   
     for (let x = 0; x < global.size; x++){
       spotArr[amount] = new Array(2 * type);
       for (let y = rounds; y < rounds + type; y++){
-        if(global.board[y][x][0] != 1 && global.board[y][x] != 2){
-          
+        if(global.board[y][x][0] != 1 && global.board[y][x] != 2){         
           spotArr[amount][place] = y;
           place++
           spotArr[amount][place] = x;
@@ -206,9 +205,6 @@ function AddVertical(length) {
     global.cantVertical = true;
     Add(length);
   }
-  // else if(location == 0 && global.cantVertical == true && global.cantHorizontal == true){
-  //   CantPutShips(length);
-  // }
   else{
   //TODO: check if can add s2 to row -> if true then add it. else try to col
     for(let i = 0; i < length; i++){
@@ -273,9 +269,6 @@ function AddHorizontal(length){
     global.cantHorizontal = true;
     Add(length);
   }
-  // else if(location == 0 && global.cantHorizontal == true && global.cantVertical == true){
-  //   CantPutShips(length);
-  // }
   else{
     for(let i = 0; i < length; i++){
       if(i == 0){
@@ -358,7 +351,6 @@ function CantPutShips(length){
       howMuchShipsCreated++   
   });
   console.log(length)
-  // console.log(decreaseAmountOfShips)
   switch(length){
     case(2):
     decreaseAmountOfShips = global.s2 - howMuchShipsCreated;

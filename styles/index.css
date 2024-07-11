@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Balthazar&display=swap" rel="stylesheet');
 
 body{
   background-color: rgb(146, 162, 167);
@@ -13,20 +13,40 @@ body{
 #form_holder{
   color: rgb(200, 198, 34);
   text-align: center;
-  border: 10x solid rgb(43, 43, 43);
+  border: 2px solid rgb(43, 43, 43);
   border-radius: 10px;
   background-image: url(./images/BackGround2.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  font-family:	Copperplate;
-  font-weight: 900;
+  font-family: 'balthazar' ;
+  font-size:large;
+  
+  font-weight: 400; 
 
 
 }
 
 #form_holder button{
   margin: 10px;
- 
+
+}
+
+#form_holder input[type='radio']{
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid black;
+  border-radius: 50%;
+  background-color: #937e83;
+  accent-color: #ff693c;
+  
+}
+
+#form_holder input[type='radio']:checked{
+  width: 19px;
+  height: 19px;
+  background: radial-gradient(#ffa600 , #ff9335, #ff5e19,#a42600b6,rgb(0, 0, 0) );
+  border: 2px solid #ff7300aa ;
 }
 
 #board_holder table{
@@ -43,10 +63,8 @@ body{
   font-weight: 900;
   font-family:	Copperplate;
   width: 100%;
-
-
-
 }
+
 
 
 .form-input label{
@@ -232,8 +250,8 @@ table {
   background: linear-gradient(#e8e04d, #ffdf11, #ff7715, #ff2b0f);
 }
 
-#amountTable tr:nth-child(even) {
-}
+/* #amountTable tr:nth-child(even) {
+} */
  
 #amountTable tr:hover {
   background-color: #2c2626;
