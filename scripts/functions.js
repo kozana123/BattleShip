@@ -8,7 +8,9 @@ export function start(event) {
     alert('יש לבחור את גודל הלוח');
     return;
   }
-
+  
+  resetGame();
+  
   global.size = Number(document.querySelector('[name="size"]:checked').value);
 
   global.s2 = Number(document.querySelector('#s2').value);
@@ -65,13 +67,24 @@ function createBoardGame() {
 
   //TODO: add battleships
   for (let i = 0; i < global.s5; i++)
-    Add(5)
-  for (let i = 0; i < global.s4; i++)
+    Add(5) 
+    
+  for (let i = 0; i < global.s4; i++){
+    global.cantHorizontal = false;
+    global.cantVertical = false;
     Add(4)
-  for (let i = 0; i < global.s3; i++)
+  } 
+  for (let i = 0; i < global.s3; i++){
+    global.cantHorizontal = false;
+    global.cantVertical = false;
     Add(3)
-  for (let i = 0; i < global.s2; i++)
+  }
+    
+  for (let i = 0; i < global.s2; i++){
+    global.cantHorizontal = false;
+    global.cantVertical = false;
     Add(2)
+  }
 
   //הדפסת הלוח על המסך
   printBoard();
@@ -95,7 +108,6 @@ function printBoard() {
 
   //הוספת אירוע לחיצה על כל תא בטבלה שנוצרה
   document.querySelectorAll('#board td').forEach((item) => { item.addEventListener('click', checkHit) });
-
   if(global.couldntFindAPlace == true)
     alert(`${global.notEnoughtSpaceMsg}`);
 }
@@ -106,7 +118,7 @@ function CreateColor(){
       item.classList.add('sea');
     }
     else if (item.innerHTML[0] == 1){
-      // item.classList.add('hit');
+      item.classList.add('hit');
     }
   });
 }
@@ -200,8 +212,9 @@ function CheckIfFreeHorizontal(type){
 function AddVertical(length) {
   let index = 0;
   let location = CheckIfFreeVertical(length);
-  console.log(`Vertical ${global.cantVertical} ,location ${location}`)
+  
   if(location == 0 && global.cantVertical == false){
+    console.log(`Vertical ${global.cantVertical} ,location ${location}`)
     global.cantVertical = true;
     Add(length);
   }
@@ -264,8 +277,9 @@ function AddVertical(length) {
 function AddHorizontal(length){
   let index = 0;
   let location = CheckIfFreeHorizontal(length)
-  console.log(`Horizontal ${global.cantHorizontal}, location ${location}`)
+  
   if(location == 0 && global.cantHorizontal == false){
+    console.log(`Horizontal ${global.cantHorizontal}, location ${location}`)
     global.cantHorizontal = true;
     Add(length);
   }
@@ -325,17 +339,19 @@ function AddHorizontal(length){
 }
 
 function Add(length){
+  console.log(`cantVertcal = ${global.cantVertical}, is vertical = ${global.isVertical}`)
+  console.log(`cantHorizontal = ${global.cantHorizontal}, is vertical = ${global.isVertical}`)
   if (global.isVertical == true && global.cantVertical == false){
-    AddVertical(length)
-    if(global.cantHorizontal != true){
-    global.isVertical = false
+    if(global.cantHorizontal == false){
+      global.isVertical = false
     }
+    AddVertical(length)
   }
   else if (global.isVertical == false && global.cantHorizontal == false){
-    AddHorizontal(length)
-    if(global.cantVertical != true){
+    if(global.cantVertical == false){
       global.isVertical = true
-    }      
+    }    
+    AddHorizontal(length)   
   }
   else{
     CantPutShips(length);
@@ -375,4 +391,20 @@ function CantPutShips(length){
   }
   global.cantHorizontal = false;
   global.cantVertical = false;
+}
+
+function resetGame(){
+  global.s2 = 0
+  global.s3 = 0
+  global.s4 = 0
+  global.s5 = 0
+  global.shipsHealth = new Array()
+  global.ships= new Array()
+  global.shipCounter = 0
+  global.isVertical = true
+
+  global.cantVertical = false
+  global.cantHorizontal = false
+  global.couldntFindAPlace = false
+  global. notEnoughtSpaceMsg = "Couldn't find a place for: "
 }
