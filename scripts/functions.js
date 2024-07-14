@@ -124,25 +124,35 @@ function CreateColor(){
 }
 function checkHit(event) {
   let element = event.target; 
+  console.log(event)
   if (element.dataset.is_part_of_ship == 'true' && element.dataset.clicked == 'false') {
     global.shipsHealth[element.dataset.id]--
-    CheckDestroy(element.dataset.id, event.target)
+    CheckDestroy(element.dataset.id, event)
     element.classList.add('hit');
-    console.log(element)
     element.dataset.clicked = 'true';
   }
   else if(element.dataset.is_part_of_ship != 'true'){
     element.classList.add('sea');
     console.log(element)
   }
-    
+  document.querySelector('#boomEffect').style.left = `${event.pageX - 100}px`
+  document.querySelector('#boomEffect').style.top = `${event.pageY - 75}px`
 }
 
 function CheckDestroy(type, event){
-  
+  let boomSound = document.querySelector('#boom');
   if(global.shipsHealth[type] == 0){
     document.querySelector(`#table_holder #ship${global.ships[type]}`).innerHTML--
     document.querySelectorAll(`td[data-id="${type}"]`).forEach((item) => {item.classList.add('destroy')})
+    
+    document.querySelector('#boomEffect').style.display = 'block'
+    document.addEventListener('animationend', function (e) {
+      if (e.animationName === 'BoomAnim'){
+        document.querySelector('#boomEffect').style.display = 'none'
+      }
+    });
+    
+    boomSound.play();
   }
  
 }
@@ -408,3 +418,4 @@ function resetGame(){
   global.couldntFindAPlace = false
   global. notEnoughtSpaceMsg = "Couldn't find a place for: "
 }
+
