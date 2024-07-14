@@ -103,7 +103,7 @@ function printBoard() {
     }
     boardHTML += '</tr>';
   }
-
+  
   document.querySelector('#board').innerHTML = boardHTML;
 
   //הוספת אירוע לחיצה על כל תא בטבלה שנוצרה
@@ -135,8 +135,7 @@ function checkHit(event) {
     element.classList.add('sea');
     console.log(element)
   }
-  document.querySelector('#boomEffect').style.left = `${event.pageX - 100}px`
-  document.querySelector('#boomEffect').style.top = `${event.pageY - 75}px`
+  
 }
 
 function CheckDestroy(type, event){
@@ -144,7 +143,8 @@ function CheckDestroy(type, event){
   if(global.shipsHealth[type] == 0){
     document.querySelector(`#table_holder #ship${global.ships[type]}`).innerHTML--
     document.querySelectorAll(`td[data-id="${type}"]`).forEach((item) => {item.classList.add('destroy')})
-    
+    document.querySelector('#boomEffect').style.left = `${event.pageX - 100}px`
+    document.querySelector('#boomEffect').style.top = `${event.pageY - 75}px`
     document.querySelector('#boomEffect').style.display = 'block'
     document.addEventListener('animationend', function (e) {
       if (e.animationName === 'BoomAnim'){
